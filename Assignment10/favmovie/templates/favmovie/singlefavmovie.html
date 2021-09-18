@@ -1,0 +1,85 @@
+{% extends "course\basic.html" %}
+{% load static %}
+
+{% block title %}
+  block title
+{% endblock title %}
+
+{% block css %}
+  
+.img-hero{
+    max-height:50vh;
+    min-width : 100vw;
+}
+
+{% endblock css %}
+
+{% block body %}
+
+{% if error == "null" %}
+  
+
+<img src="\media\{{data.image}}" alt="" class="img-hero" >
+
+<div class="container">
+    <h1 class="display-1 text-center">
+        {{data.name}}
+    </h1>
+
+    <p class="display-4">
+    {{data.desc}}
+    </p>
+
+<div class="text-center"><button  class="btn btn-primary" onclick="addToFavs('{{data.id}}')" >Add to favs<button/>
+</div>
+    
+
+
+
+</div>
+{% else %}
+<h1 class="display-1 text-danger text-center">{{error}}</h1>
+{% endif %}
+
+
+
+
+<script>
+
+  const addToFavs =(id)=>{
+  
+  
+    var favs = JSON.parse(localStorage.getItem("favs"))
+  
+    if(favs)
+    {
+      if(favs[id]){
+        favs[id] = favs[id] + 1 
+      }
+      else{
+        favs[id]=1
+      }
+      
+    }
+  else{
+    favs = {[id]:1}
+  }
+  
+  localStorage.setItem("favs",JSON.stringify(favs))
+  
+  
+  
+  var value = JSON.parse(localStorage.getItem("favs"));
+  
+  console.log(value)
+  
+  document.getElementById("favsId").innerHTML = Object.keys(value).length
+  }
+  
+  
+  
+  </script>
+  
+
+
+{% endblock body %}

@@ -1,0 +1,109 @@
+{% extends "course\basic.html" %}
+
+{% load static %}
+
+{% block title %}
+List
+{% endblock title %}
+
+
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css\style.css' %}" />
+{% endblock head %}
+
+{% block css %}
+
+{% endblock css %}
+
+{% block body %}
+
+<div class="container">
+    <h1 class="display-3 mb-5 text-center">Select your Movie</h1>
+
+
+
+<!-- second -->
+
+{% for key,value in data.items %}
+<div>
+      
+  <h1 class="display-5 mb-5 text-start">{{key}}</h1>
+  <div class="d-flex justify-content-evenly favmovie-container container">
+
+    {% for i in value  %}
+  
+    <div class="card mb-2" style="width: 18rem;">
+        <img src="/media/{{i.image}}" class="card-img-top" alt="{{i.name}}">
+        <div class="card-body">
+          <h5 class="card-title">{{i.name}}</h5>
+          <p class="card-text">Director: {{i.dname}}</p>
+          <li class="list-group-item">{{i.imdb}} IMDb</li>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Box office: {{i.earn}} crore INR</li>
+            <li class="list-group-item">{{i.rdate}}</li>
+            <li class="list-group-item">{{i.category}}</li>
+          </ul>
+          <div class="row">
+      <div class="col-6">
+        <button  class="btn btn-primary" onclick="addTofavs('{{i.id}}','{{i.name}}')" >Add to favs</button>
+      </div>
+      <div class="col-6">
+        <a href="/favmovie/fdetails/{{i.id}}" class="btn btn-primary">Rent</a>
+      </div>
+
+    </div>
+    
+    <!-- <a href="/favmovie/fdetails/?id={{i.id}}" class="btn btn-primary">View more fdetailss</a> -->
+    
+  </div>
+</div>
+
+  {% endfor %}
+    
+    </div>
+    
+</div>
+
+
+{% endfor %}
+
+</div>
+
+<script>
+
+const addTofavs =(id,name)=>{
+
+
+  var favs = JSON.parse(localStorage.getItem("favs"))
+
+  if(favs)
+  {
+    if(favs[id]){
+      favs[id] = {name:name,value: favs[id].value + 1} 
+    }
+    else{
+      favs[id]={name:name,value:1}
+    }
+    
+  }
+else{
+  favs = {[id]:{name:name,value:1} }
+}
+
+
+
+localStorage.setItem("favs",JSON.stringify(favs))
+
+
+
+var value = JSON.parse(localStorage.getItem("favs"));
+
+document.getElementById("favsId").innerHTML = Object.keys(value).length
+}
+
+
+
+</script>
+
+
+{% endblock body %}
